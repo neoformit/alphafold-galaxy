@@ -1,5 +1,5 @@
 // Create NGL Stage object
-var stage = new NGL.Stage("ngl-root");
+var stage = new NGL.Stage("viewport");
 
 // Handle window resizing
 window.addEventListener( "resize", function( event ){
@@ -8,6 +8,7 @@ window.addEventListener( "resize", function( event ){
 
 // Load PDB entry 1CRN
 stage.loadFile(
-  "https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/ranked_0.pdb",
+  "rcsb://1crn",
+  // "https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/ranked_0.pdb",
   { defaultRepresentation: true }
 );
