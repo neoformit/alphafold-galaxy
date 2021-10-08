@@ -1,0 +1,20 @@
+body {
+  font-family: 'Ubuntu', sans-serif;
+}
+h1 {
+  color: dodgerblue;
+  text-align: center;
+  font-weight: bold;
+}
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+}
+#ngl-root {
+  width: 80vw;
+  height: auto;
+  background-color: #ddd;
+}
