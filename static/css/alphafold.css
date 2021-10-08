@@ -1,3 +1,8 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 body {
   font-family: 'Ubuntu', sans-serif;
 }
@@ -14,7 +19,7 @@ main {
   padding: 50px;
 }
 #ngl-root {
-  width: 80vw;
-  height: auto;
+  width: 100%;
+  height: 100%;
   background-color: #ddd;
 }

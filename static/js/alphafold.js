@@ -7,4 +7,7 @@ window.addEventListener( "resize", function( event ){
 }, false );
 
 // Load PDB entry 1CRN
-stage.loadFile( "./data/ranked_0.pdb", { defaultRepresentation: true } );
+stage.loadFile(
+  "https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/ranked_0.pdb",
+  { defaultRepresentation: true }
+);
