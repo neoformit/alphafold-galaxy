@@ -1,3 +1,7 @@
+// Render NGLviewer for PDB files
+const uri = "rcsb://1crn";
+const uri = "/data/ranked_0.pdb";
+
 // Create NGL Stage object
 var stage = new NGL.Stage("viewport");
 
@@ -6,9 +10,8 @@ window.addEventListener( "resize", function( event ){
     stage.handleResize();
 }, false );
 
-// Load PDB entry 1CRN
-stage.loadFile(
-  "rcsb://1crn",
-  // "https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/ranked_0.pdb",
-  { defaultRepresentation: true }
-);
+// Load PDB entry
+stage.loadFile(uri).then(function (component) {
+  component.addRepresentation("cartoon");
+  component.autoView();
+});
