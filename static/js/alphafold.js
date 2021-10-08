@@ -1,5 +1,5 @@
 // Render NGLviewer for PDB files
-const uri = "rcsb://1crn";
+// const uri = "rcsb://1crn";
 const uri = "/data/ranked_0.pdb";
 
 // Create NGL Stage object
