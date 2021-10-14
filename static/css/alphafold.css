@@ -34,6 +34,9 @@ button.btn.selected {
   color: #eee;
   background-color: dodgerblue;
 }
+button.btn:focus {
+  outline: none;
+}
 button.btn:hover {
   color: white;
   box-shadow: 0 0 10px dodgerblue;
