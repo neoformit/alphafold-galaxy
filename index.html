@@ -16,6 +16,41 @@
 
   <body>
     <h1> AlphaFold results </h1>
-    <div id="viewport"></div>
+
+    <div class="main flex">
+      <div id="ngl-root"></div>
+
+      <div class="flex col">
+        <div class="box text-center">
+          <h2> Representations </h2>
+          <div>
+            <button class="btn selected" id="btn-cartoon" onclick="toggleModelRepresentation('cartoon');">
+              Cartoon
+            </button>
+
+            <button class="btn" id="btn-ball-stick" onclick="toggleModelRepresentation('ball+stick');">
+              Ball + stick
+            </button>
+
+            <button class="btn" id="btn-surface" onclick="toggleModelRepresentation('surface');">
+              Surface
+            </button>
+
+            <button class="btn" id="btn-backbone" onclick="toggleModelRepresentation('backbone');">
+              Backbone
+            </button>
+          </div>
+        </div>
+
+        <div class="box green text-center">
+          <h2> Actions </h2>
+          <div>
+            <button class="btn selected" id="btn-toggle-spin" onclick="toggleSpin();">
+              Toggle spin
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
