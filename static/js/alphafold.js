@@ -29,20 +29,21 @@ let state = {
   spin: true,
 }
 
-// const uri = "rcsb://1crn";
-const uri = (i) => `/data/${MODELS[i]}`;
+// const testUri = "rcsb://1crn";
+
+// const uri = (i) => `/${MODELS[i]}`;
+const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
 
 document.addEventListener("DOMContentLoaded", function () {
   // Create NGL Stage object
   stage = new NGL.Stage("ngl-root", { backgroundColor: 'white' });
+  stage.loadFile(uri(0), {defaultRepresentation: true});
+  stage.setSpin(true);
 
   // Handle window resizing
   window.addEventListener( "resize", function( event ){
-      stage.handleResize();
+    stage.handleResize();
   }, false );
-
-  loadModel();
-  stage.setSpin(true);
 });
 
 const loadModel = () => {
@@ -63,7 +64,6 @@ const toggleModelRepresentation = (rep) => {
 const addModelRepresentation = (rep) => {
   state.representations[rep] =
     state.modelObject.addRepresentation(rep, {colorScheme: "bfactor"});
-  // state.modelObject.autoView();
   updateButtons();
 }
 
@@ -72,13 +72,11 @@ const removeModelRepresentation = (rep) => {
   console.log(`Removing representation ${rep}`);
   state.modelObject.removeRepresentation(o);
   delete state.representations[rep];
-  // state.modelObject.autoView();
   updateButtons();
 }
 
 const clearModelRepresentation = (rep) => {
   state.modelObject.removeAllRepresentation();
-  // state.modelObject.autoView();
 }
 
 const updateButtons = () => {

@@ -20,7 +20,23 @@
     <h1> AlphaFold results </h1>
 
     <div class="main flex">
-      <div id="ngl-root"></div>
+      <div>
+        <div id="ngl-root"></div>
+        <div class="box space-1">
+          <p>
+            <span class="mono">Click + drag</span>
+            to rotate the structure
+          </p>
+          <p>
+            <span class="mono">CTRL + click + drag</span>
+            to move the structure
+          </p>
+          <p>
+            <span class="mono">Scroll up/down</span>
+            to zoom in and out
+          </p>
+        </div>
+      </div>
 
       <div class="flex col">
         <div class="box text-center">
@@ -44,7 +60,7 @@
           </div>
         </div>
 
-        <div class="box green text-center">
+        <div class="box text-center">
           <h2> Actions </h2>
           <div>
             <button class="btn selected" id="btn-toggle-spin" onclick="toggleSpin();">
