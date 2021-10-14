@@ -63,7 +63,6 @@ const toggleModelRepresentation = (rep) => {
 const addModelRepresentation = (rep) => {
   state.representations[rep] =
     state.modelObject.addRepresentation(rep, {colorScheme: "bfactor"});
-  // state.modelObject.autoView();
   updateButtons();
 }
 
@@ -72,13 +71,11 @@ const removeModelRepresentation = (rep) => {
   console.log(`Removing representation ${rep}`);
   state.modelObject.removeRepresentation(o);
   delete state.representations[rep];
-  // state.modelObject.autoView();
   updateButtons();
 }
 
 const clearModelRepresentation = (rep) => {
   state.modelObject.removeAllRepresentation();
-  // state.modelObject.autoView();
 }
 
 const updateButtons = () => {
