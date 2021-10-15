@@ -1,20 +1,120 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title> Alphafold structure prediction </title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="/static/css/alphafold.css">
+
+
+    <style media="screen">
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html, body {
+        width: 100%;
+        min-height: 100%;
+      }
+      body {
+        font-family: 'Ubuntu', sans-serif;
+        min-height: 95vh;
+      }
+      canvas {
+        background-color: white;
+        border-radius: 15px;
+        border: 1px solid grey;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        color: dodgerblue;
+        text-align: center;
+        font-weight: lighter;
+      }
+      h1 {
+        margin: 2rem;
+      }
+      button.btn {
+        color: #ccc;
+        margin: 1rem;
+        padding: .5rem;
+        font-size: 1.5rem;
+        border: none;
+        border-radius: .5rem;
+        background-color: grey;
+        transition-duration: 0.25s;
+        cursor: pointer;
+      }
+      button.btn.selected {
+        color: #eee;
+        background-color: dodgerblue;
+      }
+      button.btn:focus {
+        outline: none;
+      }
+      button.btn:hover {
+        color: white;
+        box-shadow: 0 0 10px dodgerblue;
+      }
+      .main {
+        min-height: 80vh;
+      }
+      .flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+      }
+      .col {
+        flex-direction: column;
+      }
+      .box {
+        padding: 1rem;
+        margin: 1rem auto;
+        width: fit-content;
+        border-radius: 1rem;
+      }
+      .box.blue {
+        background-color: #e0e6f0;
+        border: 1px solid dodgerblue;
+      }
+      .box.green {
+        background-color: #e6f0e0;
+        border-color: forestgreen;
+      }
+      .text-center {
+        text-align: center;
+      }
+      #ngl-root {
+        width: 800px;
+        height: 600px;
+      }
+
+      /* Text */
+      .mono {
+        font-family: monospace;
+        color: #555;
+        background-color: #ddd;
+        padding: .25rem 1rem;
+        border-radius: .25rem;
+      }
+      .space-1 {
+        line-height: 1.2;
+      }
+      .space-2 {
+        line-height: 1.5;
+      }
+    </style>
 
     <script src="https://cdn.rawgit.com/arose/ngl/v2.0.0-dev.31/dist/ngl.js"></script>
-    <script src="/static/js/alphafold.js"></script>
   </head>
+
 
   <body>
     <h1> AlphaFold results </h1>
@@ -71,4 +171,107 @@
       </div>
     </div>
   </body>
+
+
+  <script type="text/javascript">
+
+  // Render NGLviewer for PDB files
+
+  const MODELS = [
+    'ranked_0.pdb',
+    'ranked_1.pdb',
+    'ranked_2.pdb',
+    'ranked_3.pdb',
+    'ranked_4.pdb',
+  ]
+
+  const MATCHES = [];
+
+  const BUTTONS = [
+    'cartoon',
+    'ball+stick',
+    'surface',
+    'backbone',
+  ]
+
+  const DEFAULT_REPRESENTATION = "cartoon";
+
+  let stage;
+
+  let state = {
+    model: 0,
+    modelObject: null,
+    representations: {},
+    colorScheme: 'bfactor',
+    spin: true,
+  }
+
+  const uri = (i) => `./ranked_0.pdb`;
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // Create NGL Stage object
+    stage = new NGL.Stage("ngl-root", { backgroundColor: 'white' });
+    stage.loadFile(uri(0), {defaultRepresentation: true});
+    stage.setSpin(true);
+
+    // Handle window resizing
+    window.addEventListener( "resize", function( event ){
+      stage.handleResize();
+    }, false );
+  });
+
+  const loadModel = () => {
+    // Load PDB entry
+    stage.loadFile(uri(state.model)).then( (o) => {
+      state.modelObject = o;
+      addModelRepresentation(DEFAULT_REPRESENTATION);
+      o.autoView();
+    })
+  }
+
+  const toggleModelRepresentation = (rep) => {
+    rep in state.representations ?
+      removeModelRepresentation(rep)
+      : addModelRepresentation(rep)
+  }
+
+  const addModelRepresentation = (rep) => {
+    state.representations[rep] =
+      state.modelObject.addRepresentation(rep, {colorScheme: "bfactor"});
+    updateButtons();
+  }
+
+  const removeModelRepresentation = (rep) => {
+    o = state.representations[rep];
+    console.log(`Removing representation ${rep}`);
+    state.modelObject.removeRepresentation(o);
+    delete state.representations[rep];
+    updateButtons();
+  }
+
+  const clearModelRepresentation = (rep) => {
+    state.modelObject.removeAllRepresentation();
+  }
+
+  const updateButtons = () => {
+    BUTTONS.forEach( (name) => {
+      const id = `#btn-${name}`.replace('+', '-');
+      const btn = document.querySelector(id);
+      if (name in state.representations) {
+        btn.classList.add('selected')
+      } else {
+        btn.classList.remove('selected');
+      }
+    });
+  }
+
+  const toggleSpin = () => {
+    stage.toggleSpin();
+    const btn = document.querySelector('#btn-toggle-spin');
+    btn.classList.toggle('selected');
+    state.spin = !state.spin;
+  }
+  </script>
+
+
 </html>
