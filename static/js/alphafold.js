@@ -30,7 +30,7 @@ let state = {
 }
 
 // const uri = "rcsb://1crn";
-const uri = (i) => `/data/${MODELS[i]}`;
+const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
 
 document.addEventListener("DOMContentLoaded", function () {
   // Create NGL Stage object
