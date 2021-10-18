@@ -34,15 +34,25 @@ button.btn.selected {
   color: #eee;
   background-color: dodgerblue;
 }
+button.btn.green {
+  color: #eee;
+  background-color: #10941f;
+}
 button.btn:focus {
   outline: none;
+  color: inherit;
 }
 button.btn:hover {
   color: white;
   box-shadow: 0 0 10px dodgerblue;
 }
+button.btn.green:hover {
+  color: white;
+  box-shadow: 0 0 10px limegreen;
+}
 .main {
   min-height: 90vh;
+  position: relative;
 }
 .flex {
   display: flex;
@@ -94,7 +104,7 @@ button.btn:hover {
 }
 #ngl-loading {
   position: absolute;
-  top: 0;
+  top: 28%;
   display: flex;
   justify-content: center;
   align-items: center;
