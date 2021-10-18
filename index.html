@@ -213,7 +213,8 @@
   document.addEventListener("DOMContentLoaded", function () {
     // Create NGL Stage object
     window.alphafold.stage = new NGL.Stage("ngl-root", { backgroundColor: 'white' });
-    window.alphafold.stage.loadFile(uri(0), {defaultRepresentation: true});
+
+    loadModel();
     window.alphafold.stage.setSpin(true);
 
     // Handle window resizing
