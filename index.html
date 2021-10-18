@@ -177,6 +177,8 @@
 
   // Render NGLviewer for PDB files
 
+  window.alphafold = {}
+
   const MODELS = [
     'ranked_0.pdb',
     'ranked_1.pdb',
@@ -196,9 +198,9 @@
 
   const DEFAULT_REPRESENTATION = "cartoon";
 
-  let stage;
+  window.alphafold.stage = null;
 
-  let state = {
+  window.alphafold.state = {
     model: 0,
     modelObject: null,
     representations: {},
@@ -210,54 +212,54 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     // Create NGL Stage object
-    stage = new NGL.Stage("ngl-root", { backgroundColor: 'white' });
-    stage.loadFile(uri(0), {defaultRepresentation: true});
-    stage.setSpin(true);
+    window.alphafold.stage = new NGL.Stage("ngl-root", { backgroundColor: 'white' });
+    window.alphafold.stage.loadFile(uri(0), {defaultRepresentation: true});
+    window.alphafold.stage.setSpin(true);
 
     // Handle window resizing
     window.addEventListener( "resize", function( event ){
-      stage.handleResize();
+      window.alphafold.stage.handleResize();
     }, false );
   });
 
   const loadModel = () => {
     // Load PDB entry
-    stage.loadFile(uri(state.model)).then( (o) => {
-      state.modelObject = o;
+    window.alphafold.stage.loadFile(uri(window.alphafold.state.model)).then( (o) => {
+      window.alphafold.state.modelObject = o;
       addModelRepresentation(DEFAULT_REPRESENTATION);
       o.autoView();
     })
   }
 
   const toggleModelRepresentation = (rep) => {
-    rep in state.representations ?
+    rep in window.alphafold.state.representations ?
       removeModelRepresentation(rep)
       : addModelRepresentation(rep)
   }
 
   const addModelRepresentation = (rep) => {
-    state.representations[rep] =
-      state.modelObject.addRepresentation(rep, {colorScheme: "bfactor"});
+    window.alphafold.state.representations[rep] =
+      window.alphafold.state.modelObject.addRepresentation(rep, {colorScheme: "bfactor"});
     updateButtons();
   }
 
   const removeModelRepresentation = (rep) => {
-    o = state.representations[rep];
+    o = window.alphafold.state.representations[rep];
     console.log(`Removing representation ${rep}`);
-    state.modelObject.removeRepresentation(o);
-    delete state.representations[rep];
+    window.alphafold.state.modelObject.removeRepresentation(o);
+    delete window.alphafold.state.representations[rep];
     updateButtons();
   }
 
   const clearModelRepresentation = (rep) => {
-    state.modelObject.removeAllRepresentation();
+    window.alphafold.state.modelObject.removeAllRepresentation();
   }
 
   const updateButtons = () => {
     BUTTONS.forEach( (name) => {
       const id = `#btn-${name}`.replace('+', '-');
       const btn = document.querySelector(id);
-      if (name in state.representations) {
+      if (name in window.alphafold.state.representations) {
         btn.classList.add('selected')
       } else {
         btn.classList.remove('selected');
@@ -266,10 +268,10 @@
   }
 
   const toggleSpin = () => {
-    stage.toggleSpin();
+    window.alphafold.stage.toggleSpin();
     const btn = document.querySelector('#btn-toggle-spin');
     btn.classList.toggle('selected');
-    state.spin = !state.spin;
+    window.alphafold.state.spin = !window.alphafold.state.spin;
   }
   </script>
 
