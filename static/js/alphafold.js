@@ -32,7 +32,7 @@ let state = {
 // const uri = "rcsb://1crn";
 const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   // Create NGL Stage object
   stage = new NGL.Stage("ngl-root", { backgroundColor: 'white' });
 
@@ -45,12 +45,17 @@ document.addEventListener("DOMContentLoaded", function () {
   stage.setSpin(true);
 });
 
+const stopLoading = () => {
+  document.getElementById('ngl-loading').style.display = 'none';
+}
+
 const loadModel = () => {
   // Load PDB entry
   stage.loadFile(uri(state.model)).then( (o) => {
     state.modelObject = o;
     addModelRepresentation(DEFAULT_REPRESENTATION);
     o.autoView();
+    stopLoading()
   })
 }
 

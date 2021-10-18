@@ -10,8 +10,6 @@ body {
 }
 canvas {
   background-color: white;
-  border-radius: 15px;
-  border: 1px solid grey;
 }
 h1, h2, h3, h4, h5, h6 {
   color: dodgerblue;
@@ -85,7 +83,25 @@ button.btn:hover {
 .space-1 {
   line-height: 1.5;
 }
+.relative {
+  position: relative;
+}
 #ngl-root {
   width: 800px;
   height: 600px;
+  border-radius: 15px;
+  border: 1px solid grey;
+}
+#ngl-loading {
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 800px;
+  height: 600px;
+}
+#ngl-loading svg {
+  width: 30%;
+  height: 30%;
 }
