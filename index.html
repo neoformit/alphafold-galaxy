@@ -76,23 +76,44 @@
           </svg>
         </div>
 
-        <div class="box space-1">
-          <p>
-            <span class="mono">Click + drag</span>
-            to rotate the structure
-          </p>
-          <p>
-            <span class="mono">CTRL + click + drag</span>
-            to move the structure
-          </p>
-          <p>
-            <span class="mono">Scroll up/down</span>
-            to zoom in and out
-          </p>
+        <div class="flex">
+          <div class="box space-1">
+            <p>
+              <span class="mono">Click + drag</span>
+              to rotate the structure
+            </p>
+            <p>
+              <span class="mono">CTRL + click + drag</span>
+              to move the structure
+            </p>
+            <p>
+              <span class="mono">Scroll up/down</span>
+              to zoom in and out
+            </p>
+          </div>
+
+          <div class="box legend">
+            <div class="scale">
+              <div class="color"></div>
+              <div class="flex ticks">
+                <div>&lt;50</div>
+                <div>70</div>
+                <div>90+</div>
+              </div>
+            </div>
+
+            <div>
+              <p class="text-center">
+                Alphafold produces a per-residue confidence score (pLDDT) between
+                0 and 100. Some regions below 50 pLDDT may be unstructured in
+                isolation.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="flex col">
+      <div class="flex col controls">
         <div class="box text-center">
           <h2> Models </h2>
           <p>The top five models predicted by Alphafold</p>
@@ -151,12 +172,18 @@
               Dark mode
             </button>
 
+          </div>
+        </div>
+
+        <div class="box text-center">
+          <h2> Download </h2>
+          <div>
             <button class="btn green" onclick="downloadPng();">
-              Download image
+              Image
             </button>
 
             <button class="btn green" onclick="downloadPdb();">
-              Download PDB
+              PDB
             </button>
           </div>
         </div>

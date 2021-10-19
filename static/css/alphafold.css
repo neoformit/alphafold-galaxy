@@ -24,6 +24,7 @@ button.btn {
   margin: 1rem;
   padding: .5rem;
   font-size: 1.5rem;
+  min-width: 75px;
   border: none;
   border-radius: .5rem;
   background-color: grey;
@@ -61,6 +62,7 @@ button.btn.green:hover {
   padding: 1rem;
 }
 .col {
+  flex-grow: 0;
   flex-direction: column;
 }
 .box {
@@ -77,8 +79,32 @@ button.btn.green:hover {
   background-color: #e6f0e0;
   border-color: forestgreen;
 }
-.text-center {
-  text-align: center;
+.legend {
+  max-width: 350px;
+}
+.legend .scale {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.legend .color {
+  width: 150px;
+  height: 30px;
+  justify-content: space-between;
+  background: linear-gradient(
+    90deg,
+    rgba(255,55,0,1)   0%,
+    rgba(216,224,6,1)  33%,
+    rgba(34,213,238,1) 66%,
+    rgba(3,30,148,1)   100%
+    );
+}
+.legend .ticks {
+  margin-top: -1rem;
+  width: 180px;
+  justify-content: space-between;
+}
+.legend .ticks div {
 }
 .mono {
   font-family: monospace;
@@ -99,6 +125,7 @@ button.btn.green:hover {
 #ngl-root {
   width: 800px;
   height: 600px;
+  margin: auto;
   border-radius: 15px;
   border: 1px solid grey;
 }
