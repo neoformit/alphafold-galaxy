@@ -40,9 +40,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   stage = new NGL.Stage("ngl-root", { backgroundColor: 'white' });
 
   // Handle window resizing
-  window.addEventListener( "resize", function( event ){
-      stage.handleResize();
-  }, false );
+  window.addEventListener( "resize", stage.handleResize, false );
 
   loadModel();
 });
