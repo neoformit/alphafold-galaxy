@@ -10,35 +10,136 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="/static/css/alphafold.css">
+    <link rel="stylesheet" href="./static/css/alphafold.css">
 
-    <script src="https://cdn.rawgit.com/arose/ngl/v2.0.0-dev.31/dist/ngl.js"></script>
-    <script src="/static/js/alphafold.js"></script>
+    <script src="https://cdn.rawgit.com/arose/ngl/v2.0.0-dev.37/dist/ngl.js"></script>
+    <script src="./static/js/alphafold.js"></script>
   </head>
 
   <body>
     <h1> AlphaFold results </h1>
 
     <div class="main flex">
-      <div>
+      <div class="col relative">
         <div id="ngl-root"></div>
-        <div class="box space-1">
-          <p>
-            <span class="mono">Click + drag</span>
-            to rotate the structure
-          </p>
-          <p>
-            <span class="mono">CTRL + click + drag</span>
-            to move the structure
-          </p>
-          <p>
-            <span class="mono">Scroll up/down</span>
-            to zoom in and out
-          </p>
+        <div id="ngl-loading">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+            <g transform="rotate(0 50 50)">
+              <rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#88879e">
+                <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.9166666666666666s" repeatCount="indefinite"></animate>
+              </rect>
+            </g><g transform="rotate(30 50 50)">
+              <rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#88879e">
+                <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.8333333333333334s" repeatCount="indefinite"></animate>
+              </rect>
+            </g><g transform="rotate(60 50 50)">
+              <rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#88879e">
+                <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.75s" repeatCount="indefinite"></animate>
+              </rect>
+            </g><g transform="rotate(90 50 50)">
+              <rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#88879e">
+                <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.6666666666666666s" repeatCount="indefinite"></animate>
+              </rect>
+            </g><g transform="rotate(120 50 50)">
+              <rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#88879e">
+                <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.5833333333333334s" repeatCount="indefinite"></animate>
+              </rect>
+            </g><g transform="rotate(150 50 50)">
+              <rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#88879e">
+                <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.5s" repeatCount="indefinite"></animate>
+              </rect>
+            </g><g transform="rotate(180 50 50)">
+              <rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#88879e">
+                <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.4166666666666667s" repeatCount="indefinite"></animate>
+              </rect>
+            </g><g transform="rotate(210 50 50)">
+              <rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#88879e">
+                <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.3333333333333333s" repeatCount="indefinite"></animate>
+              </rect>
+            </g><g transform="rotate(240 50 50)">
+              <rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#88879e">
+                <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.25s" repeatCount="indefinite"></animate>
+              </rect>
+            </g><g transform="rotate(270 50 50)">
+              <rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#88879e">
+                <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.16666666666666666s" repeatCount="indefinite"></animate>
+              </rect>
+            </g><g transform="rotate(300 50 50)">
+              <rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#88879e">
+                <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.08333333333333333s" repeatCount="indefinite"></animate>
+              </rect>
+            </g><g transform="rotate(330 50 50)">
+              <rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#88879e">
+                <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="0s" repeatCount="indefinite"></animate>
+              </rect>
+            </g>
+          </svg>
+        </div>
+
+        <div class="flex">
+          <div class="box space-1">
+            <p>
+              <span class="mono">Click + drag</span>
+              to rotate the structure
+            </p>
+            <p>
+              <span class="mono">CTRL + click + drag</span>
+              to move the structure
+            </p>
+            <p>
+              <span class="mono">Scroll up/down</span>
+              to zoom in and out
+            </p>
+          </div>
+
+          <div class="box legend">
+            <div class="scale">
+              <div class="color"></div>
+              <div class="flex ticks">
+                <div>&lt;50</div>
+                <div>70</div>
+                <div>90+</div>
+              </div>
+            </div>
+
+            <div>
+              <p class="text-center">
+                Alphafold produces a per-residue confidence score (pLDDT) between
+                0 and 100. Some regions below 50 pLDDT may be unstructured in
+                isolation.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="flex col">
+      <div class="flex col controls">
+        <div class="box text-center">
+          <h2> Models </h2>
+          <p>The top five models predicted by Alphafold</p>
+          <div>
+            <button class="btn selected" id="btn-ranked_0" onclick="setModel(0);">
+              ranked_0
+            </button>
+
+            <button class="btn" id="btn-ranked_1" onclick="setModel(1);">
+              ranked_1
+            </button>
+
+            <button class="btn" id="btn-ranked_2" onclick="setModel(2);">
+              ranked_2
+            </button>
+
+            <button class="btn" id="btn-ranked_3" onclick="setModel(3);">
+              ranked_3
+            </button>
+
+            <button class="btn" id="btn-ranked_4" onclick="setModel(4);">
+              ranked_4
+            </button>
+          </div>
+        </div>
+
         <div class="box text-center">
           <h2> Representations </h2>
           <div>
@@ -65,6 +166,24 @@
           <div>
             <button class="btn selected" id="btn-toggle-spin" onclick="toggleSpin();">
               Toggle spin
+            </button>
+
+            <button class="btn" id="btn-toggle-dark" onclick="toggleDark();">
+              Dark mode
+            </button>
+
+          </div>
+        </div>
+
+        <div class="box text-center">
+          <h2> Download </h2>
+          <div>
+            <button class="btn green" onclick="downloadPng();">
+              Image
+            </button>
+
+            <button class="btn green" onclick="downloadPdb();">
+              PDB
             </button>
           </div>
         </div>
