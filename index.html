@@ -273,6 +273,8 @@
               Dark mode
             </button>
 
+            <br>
+
             <button class="btn green" onclick="downloadPng();">
               Download image
             </button>
@@ -349,8 +351,8 @@
 
     const loadModel = () => {
       setLoading(1);
-      if (state.representations.length) {
-        reps = Objects.keys(state.representations);
+      reps = Objects.keys(state.representations);
+      if (reps.length) {
         clearModelRepresentations();
       } else {
         reps = [DEFAULT_REPRESENTATION];
