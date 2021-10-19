@@ -13,7 +13,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-
     <style type="text/css">
       * {
         margin: 0;
@@ -21,11 +20,12 @@
       }
       html, body {
         width: 100%;
-        min-height: 100%;
       }
       body {
         font-family: 'Ubuntu', sans-serif;
-        min-height: 95vh;
+      }
+      canvas {
+        background-color: white;
       }
       h1, h2, h3, h4, h5, h6 {
         color: dodgerblue;
@@ -50,15 +50,25 @@
         color: #eee;
         background-color: dodgerblue;
       }
+      button.btn.green {
+        color: #eee;
+        background-color: #10941f;
+      }
       button.btn:focus {
         outline: none;
+        color: inherit;
       }
       button.btn:hover {
         color: white;
         box-shadow: 0 0 10px dodgerblue;
       }
+      button.btn.green:hover {
+        color: white;
+        box-shadow: 0 0 10px limegreen;
+      }
       .main {
-        min-height: 80vh;
+        min-height: 90vh;
+        position: relative;
       }
       .flex {
         display: flex;
@@ -86,28 +96,6 @@
       .text-center {
         text-align: center;
       }
-      #ngl-root {
-        width: 800px;
-        height: 600px;
-        border-radius: 15px;
-        border: 1px solid grey;
-      }
-      #ngl-loading {
-        position: absolute;
-        top: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 800px;
-        height: 600px;
-      }
-      #ngl-loading svg {
-        width: 50%;
-        height: 50%;
-      }
-
-
-      /* Text */
       .mono {
         font-family: monospace;
         color: #555;
@@ -118,12 +106,34 @@
       .space-1 {
         line-height: 1.2;
       }
-      .space-2 {
+      .space-1 {
         line-height: 1.5;
+      }
+      .relative {
+        position: relative;
+      }
+      #ngl-root {
+        width: 800px;
+        height: 600px;
+        border-radius: 15px;
+        border: 1px solid grey;
+      }
+      #ngl-loading {
+        position: absolute;
+        top: 28%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 800px;
+        height: 600px;
+      }
+      #ngl-loading svg {
+        width: 30%;
+        height: 30%;
       }
     </style>
 
-    <script src="https://cdn.rawgit.com/arose/ngl/v2.0.0-dev.31/dist/ngl.js"></script>
+    <script src="https://cdn.rawgit.com/arose/ngl/v2.0.0-dev.37/dist/ngl.js"></script>
   </head>
 
 
@@ -241,111 +251,186 @@
 
   <script type="text/javascript">
 
-  // Render NGLviewer for PDB files
+    // Render NGLviewer for PDB files
 
-  window.alphafold = {}
+    // State management has been implemented with vanilla Js but could have used
+    // Vue - it's a fairly simple use case so a global 'state' object works fine
+    // without complicating things too much.
 
-  const MODELS = [
-    'ranked_0.pdb',
-    'ranked_1.pdb',
-    'ranked_2.pdb',
-    'ranked_3.pdb',
-    'ranked_4.pdb',
-  ]
+    const MODELS = [
+      'ranked_0.pdb',
+      'ranked_1.pdb',
+      'ranked_2.pdb',
+      'ranked_3.pdb',
+      'ranked_4.pdb',
+    ]
 
-  const MATCHES = [];
+    const BUTTONS = [
+      'cartoon',
+      'ball+stick',
+      'surface',
+      'backbone',
+    ]
 
-  const BUTTONS = [
-    'cartoon',
-    'ball+stick',
-    'surface',
-    'backbone',
-  ]
+    const DEFAULT_REPRESENTATION = BUTTONS[0];
 
-  const DEFAULT_REPRESENTATION = "cartoon";
+    let stage;
 
-  window.alphafold.stage = null;
+    let state = {
+      model: 0,
+      modelObject: null,
+      representations: {},
+      colorScheme: 'bfactor',
+      darkMode: false,
+      spin: true,
+    }
 
-  window.alphafold.state = {
-    model: 0,
-    modelObject: null,
-    representations: {},
-    colorScheme: 'bfactor',
-    spin: true,
-  }
+    // const uri = "rcsb://1crn";
+    const uri = (i) => MODELS[i];
 
-  const uri = (i) => MODELS[0];
+    document.addEventListener("DOMContentLoaded", async function () {
+      // Create NGL Stage object
+      stage = new NGL.Stage("ngl-root", { backgroundColor: 'white' });
 
-  document.addEventListener("DOMContentLoaded", function () {
-    // Create NGL Stage object
-    window.alphafold.stage = new NGL.Stage("ngl-root", { backgroundColor: 'white' });
+      // Handle window resizing
+      window.addEventListener( "resize", function( event ){
+          stage.handleResize();
+      }, false );
 
-    loadModel();
-    window.alphafold.stage.setSpin(true);
-
-    // Handle window resizing
-    window.addEventListener( "resize", function( event ){
-      window.alphafold.stage.handleResize();
-    }, false );
-  });
-
-  const stopLoading = () => {
-    // Remove loading animation
-    document.getElementById('ngl-loading').style.display = 'none';
-  }
-
-  const loadModel = () => {
-    // Load PDB entry
-    window.alphafold.stage.loadFile(uri(window.alphafold.state.model)).then( (o) => {
-      window.alphafold.state.modelObject = o;
-      addModelRepresentation(DEFAULT_REPRESENTATION);
-      o.autoView();
-      stopLoading()
-    })
-  }
-
-  const toggleModelRepresentation = (rep) => {
-    rep in window.alphafold.state.representations ?
-      removeModelRepresentation(rep)
-      : addModelRepresentation(rep)
-  }
-
-  const addModelRepresentation = (rep) => {
-    window.alphafold.state.representations[rep] =
-      window.alphafold.state.modelObject.addRepresentation(rep, {colorScheme: "bfactor"});
-    updateButtons();
-  }
-
-  const removeModelRepresentation = (rep) => {
-    o = window.alphafold.state.representations[rep];
-    console.log(`Removing representation ${rep}`);
-    window.alphafold.state.modelObject.removeRepresentation(o);
-    delete window.alphafold.state.representations[rep];
-    updateButtons();
-  }
-
-  const clearModelRepresentation = (rep) => {
-    window.alphafold.state.modelObject.removeAllRepresentation();
-  }
-
-  const updateButtons = () => {
-    BUTTONS.forEach( (name) => {
-      const id = `#btn-${name}`.replace('+', '-');
-      const btn = document.querySelector(id);
-      if (name in window.alphafold.state.representations) {
-        btn.classList.add('selected')
-      } else {
-        btn.classList.remove('selected');
-      }
+      loadModel();
     });
-  }
 
-  const toggleSpin = () => {
-    window.alphafold.stage.toggleSpin();
-    const btn = document.querySelector('#btn-toggle-spin');
-    btn.classList.toggle('selected');
-    window.alphafold.state.spin = !window.alphafold.state.spin;
-  }
+    // Models ----------------------------------------------------------------------
+
+    const setModel = (ix) => {
+      state.model = ix;
+      stage.removeComponent(state.modelObject);
+      loadModel();
+      updateButtons();
+    }
+
+    const loadModel = () => {
+      setLoading(1);
+      if (state.representations.length) {
+        reps = Objects.keys(state.representations);
+        clearModelRepresentations();
+      } else {
+        reps = [DEFAULT_REPRESENTATION];
+      }
+
+      // Load PDB entry
+      return stage.loadFile(uri(state.model)).then( (o) => {
+        state.modelObject = o;
+        reps.forEach( (r) => addModelRepresentation(r) );
+        stage.setSpin(state.spin);
+        o.autoView();
+        setLoading(0);
+      })
+    }
+
+    // Representations -------------------------------------------------------------
+
+    const toggleModelRepresentation = (rep) => {
+      rep in state.representations ?
+        removeModelRepresentation(rep)
+        : addModelRepresentation(rep)
+    }
+
+    const addModelRepresentation = (rep) => {
+      state.representations[rep] =
+        state.modelObject.addRepresentation(rep, {colorScheme: "bfactor"});
+      updateButtons();
+    }
+
+    const removeModelRepresentation = (rep) => {
+      o = state.representations[rep];
+      state.modelObject.removeRepresentation(o);
+      delete state.representations[rep];
+      updateButtons();
+    }
+
+    const clearModelRepresentations = () => {
+      state.modelObject.removeAllRepresentations();
+      state.representations = {};
+    }
+
+    // Actions ---------------------------------------------------------------------
+
+    const toggleDark = () => {
+      state.darkMode = !state.darkMode;
+      stage.setParameters({
+        backgroundColor: state.darkMode ? 'black' : 'white',
+      });
+      const btn = document.querySelector('#btn-toggle-dark');
+      btn.classList.toggle('selected');
+    }
+
+    const setLoading = (state) => {
+      document.getElementById('ngl-loading')
+        .style.display = state ? 'block' : 'none';
+    }
+
+    const toggleSpin = () => {
+      stage.toggleSpin();
+      const btn = document.querySelector('#btn-toggle-spin');
+      btn.classList.toggle('selected');
+      state.spin = !state.spin;
+    }
+
+    const downloadPng = () => {
+      const params = {
+        factor: 3,
+        antialias: true,
+      }
+      stage.makeImage(params).then( (blob) => {
+        const name = MODELS[state.model].replace('.pdb', '.png');
+        const url = URL.createObjectURL(blob);
+        makeDownload(url, name);
+      })
+    }
+
+    const downloadPdb = () => {
+      const url = uri(state.model);
+      const name = `alphafold_${MODELS[state.model]}`;
+      makeDownload(url, name);
+    }
+
+    const makeDownload = (url, name) => {
+      // Will not work with cross-origin urls (i.e. during development)
+      const saveLink = document.createElement('a');
+      saveLink.href = url;
+      saveLink.download = name;
+      document.body.appendChild(saveLink);
+      saveLink.dispatchEvent(
+        new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        })
+      );
+      document.body.removeChild(saveLink);
+    }
+
+    const updateButtons = () => {
+      MODELS.forEach( (name, i) => {
+        const id = `#btn-${name.replace('.pdb', '')}`;
+        const btn = document.querySelector(id);
+        i == state.model ?
+          btn.classList.add('selected')
+          : btn.classList.remove('selected');
+      })
+
+      BUTTONS.forEach( (name) => {
+        const id = `#btn-${name}`.replace('+', '-');
+        const btn = document.querySelector(id);
+        if (name in state.representations) {
+          btn.classList.add('selected')
+        } else {
+          btn.classList.remove('selected');
+        }
+      });
+    }
+
   </script>
 
 
