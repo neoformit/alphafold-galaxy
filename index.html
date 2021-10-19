@@ -353,7 +353,7 @@
       setLoading(1);
       reps = Object.keys(state.representations);
       if (reps.length) {
-        clearModelRepresentations();
+        state.representations = {};
       } else {
         reps = [DEFAULT_REPRESENTATION];
       }
