@@ -402,7 +402,7 @@
         backgroundColor: state.darkMode ? 'black' : 'white',
       });
       const btn = document.querySelector('#btn-toggle-dark');
-      btn.classList.toggle('selected');
+      btn && btn.classList.toggle('selected');
     }
 
     const setLoading = (state) => {
@@ -413,7 +413,7 @@
     const toggleSpin = () => {
       stage.toggleSpin();
       const btn = document.querySelector('#btn-toggle-spin');
-      btn.classList.toggle('selected');
+      btn && btn.classList.toggle('selected');
       state.spin = !state.spin;
     }
 
@@ -455,6 +455,7 @@
       MODELS.forEach( (name, i) => {
         const id = `#btn-${name.replace('.pdb', '')}`;
         const btn = document.querySelector(id);
+        if (!btn) return
         i == state.model ?
           btn.classList.add('selected')
           : btn.classList.remove('selected');
@@ -463,6 +464,7 @@
       BUTTONS.forEach( (name) => {
         const id = `#btn-${name}`.replace('+', '-');
         const btn = document.querySelector(id);
+        if (!btn) return
         if (name in state.representations) {
           btn.classList.add('selected')
         } else {
