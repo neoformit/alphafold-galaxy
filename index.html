@@ -390,7 +390,7 @@
     }
 
     const clearModelRepresentations = () => {
-      state.modelObject.removeAllRepresentations();
+      state.modelObject && state.modelObject.removeAllRepresentations();
       state.representations = {};
     }
 
