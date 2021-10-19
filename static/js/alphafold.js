@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 const setModel = (ix) => {
   state.model = ix;
-  stage.removeComponent(state.modelObject);
+  stage.removeAllComponents();
   loadModel();
   updateButtons();
 }
