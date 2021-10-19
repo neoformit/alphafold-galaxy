@@ -216,6 +216,32 @@
 
       <div class="flex col">
         <div class="box text-center">
+          <h2> Models </h2>
+          <p>The top five models predicted by Alphafold</p>
+          <div>
+            <button class="btn selected" id="btn-ranked_0" onclick="setModel(0);">
+              ranked_0
+            </button>
+
+            <button class="btn" id="btn-ranked_1" onclick="setModel(1);">
+              ranked_1
+            </button>
+
+            <button class="btn" id="btn-ranked_2" onclick="setModel(2);">
+              ranked_2
+            </button>
+
+            <button class="btn" id="btn-ranked_3" onclick="setModel(3);">
+              ranked_3
+            </button>
+
+            <button class="btn" id="btn-ranked_4" onclick="setModel(4);">
+              ranked_4
+            </button>
+          </div>
+        </div>
+
+        <div class="box text-center">
           <h2> Representations </h2>
           <div>
             <button class="btn selected" id="btn-cartoon" onclick="toggleModelRepresentation('cartoon');">
@@ -241,6 +267,18 @@
           <div>
             <button class="btn selected" id="btn-toggle-spin" onclick="toggleSpin();">
               Toggle spin
+            </button>
+
+            <button class="btn" id="btn-toggle-dark" onclick="toggleDark();">
+              Dark mode
+            </button>
+
+            <button class="btn green" onclick="downloadPng();">
+              Download image
+            </button>
+
+            <button class="btn green" onclick="downloadPdb();">
+              Download PDB
             </button>
           </div>
         </div>
