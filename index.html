@@ -208,6 +208,10 @@
             to move the structure
           </p>
           <p>
+            <span class="mono">Click</span>
+            an atom to focus the molecule
+          </p>
+          <p>
             <span class="mono">Scroll up/down</span>
             to zoom in and out
           </p>
@@ -340,7 +344,7 @@
       loadModel();
     });
 
-    // Models ----------------------------------------------------------------------
+    // Models ------------------------------------------------------------------
 
     const setModel = (ix) => {
       state.model = ix;
@@ -368,7 +372,7 @@
       })
     }
 
-    // Representations -------------------------------------------------------------
+    // Representations ---------------------------------------------------------
 
     const toggleModelRepresentation = (rep) => {
       rep in state.representations ?
@@ -394,7 +398,7 @@
       state.representations = {};
     }
 
-    // Actions ---------------------------------------------------------------------
+    // Actions -----------------------------------------------------------------
 
     const toggleDark = () => {
       state.darkMode = !state.darkMode;
