@@ -221,7 +221,7 @@
       <div class="flex col">
         <div class="box text-center">
           <h2> Models </h2>
-          <p>The top five models predicted by Alphafold</p>
+          <p>The top five structures predicted by Alphafold</p>
           <div>
             <button class="btn selected" id="btn-ranked_0" onclick="setModel(0);">
               ranked_0
@@ -441,6 +441,7 @@
 
     const makeDownload = (url, name) => {
       // Will not work with cross-origin urls (i.e. during development)
+      console.log(`Creating file download for ${name}, href ${url}`);
       const saveLink = document.createElement('a');
       saveLink.href = url;
       saveLink.download = name;
