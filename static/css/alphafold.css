@@ -4,6 +4,7 @@
 }
 html, body {
   width: 100%;
+  font-size: 1rem;
 }
 body {
   font-family: 'Ubuntu', sans-serif;
@@ -18,13 +19,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 h1 {
   margin: 2rem;
+  font-size: 3rem;
+}
+h2 {
+  font-size: 2rem;
+  margin-top: 1rem;
+  margin-bottom: .5rem;
 }
 button.btn {
   color: #ccc;
   margin: 1rem;
   padding: .5rem;
-  font-size: 1.5rem;
-  min-width: 75px;
+  font-size: 1rem;
+  min-width: 4rem;
   border: none;
   border-radius: .5rem;
   background-color: grey;
@@ -122,23 +129,63 @@ button.btn.green:hover {
 .relative {
   position: relative;
 }
-#ngl-root {
-  width: 800px;
-  height: 600px;
+#ngl-root-parent {
+  width: 40vw;
+  height: 30vw;
   margin: auto;
+  position: relative;
+}
+#ngl-root {
+  width: 40vw;
+  height: 30vw;
   border-radius: 15px;
   border: 1px solid grey;
 }
 #ngl-loading {
   position: absolute;
-  top: 28%;
+  top: 0;
+  left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 800px;
-  height: 600px;
+  width: 40vw;
+  height: 30vw;
 }
 #ngl-loading svg {
-  width: 30%;
-  height: 30%;
+  width: 10vw;
+  height: 10vw;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  :root {
+    font-size: 10pt;
+  }
+  button.btn {
+    margin: .5rem;
+    padding: .25rem;
+  }
+  .box {
+    padding: .5rem;
+    margin: .5rem auto;
+  }
+  .legend {
+    max-width: 200px;
+  }
+  .help-text {
+    font-size: 0.8rem;
+  }
+  .mono {
+    padding: .25rem .5rem;
+  }
+}
+@media (max-width: 1000px) {
+  :root {
+    font-size: 8pt;
+  }
+}
+@media (max-width: 800px) {
+  :root {
+    font-size: 6pt;
+  }
 }

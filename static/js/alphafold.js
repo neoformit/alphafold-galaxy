@@ -36,7 +36,7 @@ let state = {
 const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
 
 document.addEventListener("DOMContentLoaded", async function () {
-  // Create NGL Stage object
+  // Create NGL stage object
   stage = new NGL.Stage("ngl-root", { backgroundColor: 'white' });
 
   // Handle window resizing
@@ -112,7 +112,7 @@ const toggleDark = () => {
 
 const setLoading = (state) => {
   document.getElementById('ngl-loading')
-    .style.display = state ? 'block' : 'none';
+    .style.display = state ? 'flex' : 'none';
 }
 
 const toggleSpin = () => {
