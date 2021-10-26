@@ -1,0 +1,41 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html, body {
+  width: 100%;
+  min-height: 100%;
+}
+body {
+  font-family: 'Ubuntu', sans-serif;
+  min-height: 95vh;
+}
+canvas {
+  border-radius: 15px;
+  border: 1px solid grey;
+}
+h1, h2, h3, h4, h5, h6 {
+  color: dodgerblue;
+  text-align: center;
+  font-weight: lighter;
+}
+h1 {
+  margin: 2rem;
+}
+h3 {
+  margin-top: 4rem;
+}
+.main {
+  min-height: 90vh;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.ngl-root {
+  width: 600px;
+  height: 400px;
+  margin: 25px;
+  border-radius: 15px;
+  border: 1px solid grey;
+}
