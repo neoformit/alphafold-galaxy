@@ -86,6 +86,7 @@
       }
       .col {
         flex-direction: column;
+        flex-grow: 0;
       }
       .box {
         padding: 1rem;
@@ -100,9 +101,6 @@
       .box.green {
         background-color: #e6f0e0;
         border-color: forestgreen;
-      }
-      .text-center {
-        text-align: center;
       }
       .mono {
         font-family: monospace;
@@ -119,6 +117,31 @@
       }
       .relative {
         position: relative;
+      }
+      .legend {
+        max-width: 350px;
+      }
+      .legend .scale {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .legend .color {
+        width: 150px;
+        height: 30px;
+        justify-content: space-between;
+        background: linear-gradient(
+          90deg,
+          rgba(255,55,0,1)   0%,
+          rgba(216,224,6,1)  33%,
+          rgba(34,213,238,1) 66%,
+          rgba(3,30,148,1)   100%
+          );
+      }
+      .legend .ticks {
+        margin-top: -1rem;
+        width: 180px;
+        justify-content: space-between;
       }
       #ngl-root-parent {
         width: 40vw;
@@ -196,7 +219,7 @@
     <h1> AlphaFold results </h1>
 
     <div class="main flex">
-      <div>
+      <div class="col relative">
         <div id="ngl-root-parent">
 
           <div id="ngl-root"></div>
@@ -256,27 +279,48 @@
           </div>
         </div>
 
-        <div class="box space-1 help-text">
-          <p>
-            <span class="mono">Click + drag</span>
-            to rotate the structure
-          </p>
-          <p>
-            <span class="mono">CTRL + click + drag</span>
-            to move the structure
-          </p>
-          <p>
-            <span class="mono">Click</span>
-            an atom to focus the molecule
-          </p>
-          <p>
-            <span class="mono">Scroll up/down</span>
-            to zoom in and out
-          </p>
+        <div class="flex">
+          <div class="box space-1">
+            <p>
+              <span class="mono">Click + drag</span>
+              to rotate the structure
+            </p>
+            <p>
+              <span class="mono">CTRL + click + drag</span>
+              to move the structure
+            </p>
+            <p>
+              <span class="mono">Click</span>
+              an atom to focus the molecule
+            </p>
+            <p>
+              <span class="mono">Scroll up/down</span>
+              to zoom in and out
+            </p>
+          </div>
+
+          <div class="box legend">
+            <div class="scale">
+              <div class="color"></div>
+              <div class="flex ticks">
+                <div>&lt;50</div>
+                <div>70</div>
+                <div>90+</div>
+              </div>
+            </div>
+
+            <div>
+              <p class="text-center">
+                Alphafold produces a per-residue confidence score (pLDDT) between
+                0 and 100. Some regions below 50 pLDDT may be unstructured in
+                isolation.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="flex col">
+      <div class="flex col controls">
         <div class="box text-center">
           <h2> Models </h2>
           <p>The top five structures predicted by Alphafold</p>
@@ -334,15 +378,18 @@
             <button class="btn" id="btn-toggle-dark" onclick="toggleDark();">
               Dark mode
             </button>
+          </div>
+        </div>
 
-            <br>
-
+        <div class="box text-center">
+          <h2> Download </h2>
+          <div>
             <button class="btn green" onclick="downloadPng();">
-              Download image
+              Image
             </button>
 
             <button class="btn green" onclick="downloadPdb();">
-              Download PDB
+              PDB
             </button>
           </div>
         </div>
