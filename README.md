@@ -1,2 +1,2 @@
 # alphafold-galaxy
-Alphafold Galaxy tool wrapper
+Alphafold Galaxy tool UI
