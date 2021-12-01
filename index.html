@@ -112,7 +112,7 @@
       .space-1 {
         line-height: 1.2;
       }
-      .space-1 {
+      .space-2 {
         line-height: 1.5;
       }
       .relative {
@@ -422,8 +422,10 @@
     ]
 
     const DEFAULT_REPRESENTATION = BUTTONS[0];
+    const MAX_CLICK_INTERVAL_MS = 500;
 
     let stage;
+    let nonceSetModel;
 
     let state = {
       model: 0,
@@ -434,9 +436,9 @@
       spin: true,
     }
 
-    // const uri = "rcsb://1crn";
-    // TEST 1344x927 viewport
-    const uri = (i) => MODELS[i];
+    // Can update this function for changing URI in dev
+    // const uri = (i) => MODELS[i];
+    const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
 
     document.addEventListener("DOMContentLoaded", async function () {
       // Create NGL Stage object
@@ -453,12 +455,21 @@
     const setModel = (ix) => {
       state.model = ix;
       stage.removeComponent(state.modelObject);
-      loadModel();
-      updateButtons();
+      setLoading(1);
+
+      // Set nonce and wait before reloading
+      nonceSetModel = new Object();
+      const localNonce = nonceSetModel;
+      setTimeout( () => {
+        if (localNonce === nonceSetModel) {
+          // The user has stopped clicking, hurray...
+          loadModel();
+          updateButtons();
+        }
+      }, MAX_CLICK_INTERVAL_MS);
     }
 
     const loadModel = () => {
-      setLoading(1);
       reps = Object.keys(state.representations);
       if (reps.length) {
         state.representations = {};
