@@ -39,9 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
   stage.setSpin(true);
 
   // Handle window resizing
-  window.addEventListener( "resize", function( event ){
-    stage.handleResize();
-  }, false );
+  window.addEventListener("resize", () => stage.handleResize());
 });
 
 const loadModel = () => {

@@ -414,14 +414,14 @@
       'ranked_4.pdb',
     ]
 
-    const BUTTONS = [
+    const REPRESENTATIONS = [
       'cartoon',
       'ball+stick',
       'surface',
       'backbone',
     ]
 
-    const DEFAULT_REPRESENTATION = BUTTONS[0];
+    const DEFAULT_REPRESENTATION = REPRESENTATIONS[0];
     const MAX_CLICK_INTERVAL_MS = 500;
 
     let stage;
@@ -437,15 +437,15 @@
     }
 
     // Can update this function for changing URI in dev
-    const uri = (i) => MODELS[i];
-    // const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
+    // const uri = (i) => MODELS[i];
+    const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
 
     document.addEventListener("DOMContentLoaded", async function () {
       // Create NGL Stage object
       stage = new NGL.Stage("ngl-root", { backgroundColor: 'white' });
 
       // Handle window resizing
-      window.addEventListener("resize", stage.handleResize, false);
+      window.addEventListener("resize",  () => stage.handleResize());
 
       loadModel();
     });
@@ -581,7 +581,7 @@
           : btn.classList.remove('selected');
       })
 
-      BUTTONS.forEach( (name) => {
+      REPRESENTATIONS.forEach( (name) => {
         const id = `#btn-${name}`.replace('+', '-');
         const btn = document.querySelector(id);
         if (!btn) return
