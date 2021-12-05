@@ -441,6 +441,9 @@
     // const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
 
     document.addEventListener("DOMContentLoaded", async function () {
+      // Set debug for development if NGL is being funny
+      // NGL.setDebug(true)
+
       // Create NGL Stage object
       stage = new NGL.Stage("ngl-root", { backgroundColor: 'white' });
 
