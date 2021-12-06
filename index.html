@@ -433,6 +433,7 @@
       representations: {},
       colorScheme: 'bfactor',
       darkMode: false,
+      loading: 1,
       spin: true,
     }
 
@@ -450,15 +451,16 @@
       // Handle window resizing
       window.addEventListener("resize",  () => stage.handleResize());
 
-      console.log(`loadModel: ${Date.now()}`)
       loadModel();
-      console.log(`setTimeout: ${Date.now()}`)
-      setTimeout( () => {
-        // Reload if NGL didn't display in 2 seconds
-        const canvas = document.querySelector('#ngl-root canvas');
-        canvas.height < 100 && window.reload();
-        console.log(`setTimeout expired: ${Date.now()}`)
-      }, 2000)
+      while (true) {
+        if (!state.loading) {
+          // Reload page if NGL failed to display. Weird occassional bug.
+          const canvas = document.querySelector('#ngl-root canvas');
+          canvas.height < 50 && window.reload();
+          break
+        }
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
     });
 
     // Models ------------------------------------------------------------------
@@ -468,7 +470,7 @@
       stage.removeComponent(state.modelObject);
       setLoading(1);
 
-      // Set nonce and wait before reloading
+      // Set nonce and wait before reloading to debounce rapid clicking
       nonceSetModel = new Object();
       const localNonce = nonceSetModel;
       setTimeout( () => {
@@ -538,6 +540,7 @@
     const setLoading = (state) => {
       document.getElementById('ngl-loading')
         .style.display = state ? 'flex' : 'none';
+      state.loading = state;
     }
 
     const toggleSpin = () => {
@@ -605,6 +608,5 @@
     }
 
   </script>
-
 
 </html>
