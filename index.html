@@ -450,7 +450,15 @@
       // Handle window resizing
       window.addEventListener("resize",  () => stage.handleResize());
 
+      console.log(`loadModel: ${Date.now()}`)
       loadModel();
+      console.log(`setTimeout: ${Date.now()}`)
+      setTimeout( () => {
+        // Reload if NGL didn't display in 2 seconds
+        const canvas = document.querySelector('#ngl-root canvas');
+        canvas.height < 100 && window.reload();
+        console.log(`setTimeout expired: ${Date.now()}`)
+      }, 2000)
     });
 
     // Models ------------------------------------------------------------------
