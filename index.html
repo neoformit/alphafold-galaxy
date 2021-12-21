@@ -106,7 +106,7 @@
         font-family: monospace;
         color: #555;
         background-color: #ddd;
-        padding: .25rem 1rem;
+        padding: .25rem;
         border-radius: .25rem;
       }
       .space-1 {
@@ -155,10 +155,18 @@
         border-radius: 15px;
         border: 1px solid grey;
       }
-
+      #ngl-nothing {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        text-align: center;
+        width: 40vw;
+        height: 30vw;
+        padding-top: 12vw;
+      }
       #ngl-loading {
         position: absolute;
-        top: 28%;
         top: 0;
         left: 0;
         display: flex;
@@ -224,6 +232,10 @@
 
           <div id="ngl-root"></div>
 
+          <div id="ngl-nothing">
+            No representations to display
+          </div>
+
           <div id="ngl-loading">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
               <g transform="rotate(0 50 50)">
@@ -282,6 +294,10 @@
         <div class="flex">
           <div class="box space-1">
             <p>
+              <span class="mono">Scroll up/down</span>
+              to zoom in and out
+            </p>
+            <p>
               <span class="mono">Click + drag</span>
               to rotate the structure
             </p>
@@ -291,11 +307,7 @@
             </p>
             <p>
               <span class="mono">Click</span>
-              an atom to focus the molecule
-            </p>
-            <p>
-              <span class="mono">Scroll up/down</span>
-              to zoom in and out
+              an atom to bring it into focus
             </p>
           </div>
 
@@ -311,9 +323,14 @@
 
             <div>
               <p class="text-center">
-                Alphafold produces a per-residue confidence score (pLDDT) between
-                0 and 100. Some regions below 50 pLDDT may be unstructured in
-                isolation.
+                <small>
+                Alphafold produces a
+                <a href="https://alphafold.ebi.ac.uk/faq#faq-5">
+                  per-residue confidence score (pLDDT)
+                </a>
+                between 0 and 100. Some regions below 50 pLDDT may be
+                unstructured in isolation.
+              </small>
               </p>
             </div>
           </div>
@@ -385,7 +402,7 @@
           <h2> Download </h2>
           <div>
             <button class="btn green" onclick="downloadPng();">
-              Image
+              Snapshot
             </button>
 
             <button class="btn green" onclick="downloadPdb();">
@@ -437,9 +454,9 @@
       spin: true,
     }
 
-    // Can update this function for changing URI in dev
-    const uri = (i) => MODELS[i];
-    // const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
+    // Can update this function for changing URI in local development
+    // const uri = (i) => MODELS[i];
+    const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
 
     document.addEventListener("DOMContentLoaded", async function () {
       // Set debug for development if NGL is being funny
@@ -605,6 +622,12 @@
           btn.classList.remove('selected');
         }
       });
+
+      // Show "Nothing to display" if no representations are selected
+      document.querySelector('#ngl-nothing').style.display =
+        Object.keys(state.representations).length ?
+        'none'
+        : 'block';
     }
 
   </script>
