@@ -224,7 +224,7 @@
 
 
   <body>
-    <h1> AlphaFold results </h1>
+    <h1> Alphafold structure prediction </h1>
 
     <div class="main flex">
       <div class="col relative">
@@ -454,9 +454,9 @@
       spin: true,
     }
 
-    // Can update this function for changing URI in local development
-    // const uri = (i) => MODELS[i];
-    const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
+    const uri = (i) => MODELS[i];
+    // Can update this function to return test model URI in local dev
+    // const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
 
     document.addEventListener("DOMContentLoaded", async function () {
       // Set debug for development if NGL is being funny
@@ -493,8 +493,7 @@
       setTimeout( () => {
         if (localNonce === nonceSetModel) {
           // The user has stopped clicking, hurray...
-          loadModel();
-          updateButtons();
+          loadModel().then(updateButtons);
         }
       }, MAX_CLICK_INTERVAL_MS);
     }
