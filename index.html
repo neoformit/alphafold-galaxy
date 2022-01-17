@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js" integrity="sha512-yocoLferfPbcwpCMr8v/B0AB4SWpJlouBwgE0D3ZHaiP1nuu5djZclFEIj9znuqghaZ3tdCMRrreLoM8km+jIQ==" crossorigin="anonymous"></script>
 
     <style type="text/css">
       * {
@@ -93,14 +94,6 @@
         margin: 1rem auto;
         width: fit-content;
         border-radius: 1rem;
-      }
-      .box.blue {
-        background-color: #e0e6f0;
-        border: 1px solid dodgerblue;
-      }
-      .box.green {
-        background-color: #e6f0e0;
-        border-color: forestgreen;
       }
       .mono {
         font-family: monospace;
@@ -339,7 +332,7 @@
 
       <div class="flex col controls">
         <div class="box text-center">
-          <h2> Models </h2>
+          <h3> Select model </h3>
           <p>The top five structures predicted by Alphafold</p>
           <div>
             <button class="btn selected" id="btn-ranked_0" onclick="setModel(0);">
@@ -365,7 +358,7 @@
         </div>
 
         <div class="box text-center">
-          <h2> Representations </h2>
+          <h3> Toggle representations </h3>
           <div>
             <button class="btn selected" id="btn-cartoon" onclick="toggleModelRepresentation('cartoon');">
               Cartoon
@@ -386,7 +379,7 @@
         </div>
 
         <div class="box text-center">
-          <h2> Actions </h2>
+          <h3> Actions </h3>
           <div>
             <button class="btn selected" id="btn-toggle-spin" onclick="toggleSpin();">
               Toggle spin
@@ -399,7 +392,7 @@
         </div>
 
         <div class="box text-center">
-          <h2> Download </h2>
+          <h3> Download </h3>
           <div>
             <button class="btn green" onclick="downloadPng();">
               Snapshot
@@ -423,6 +416,35 @@
     // Vue - it's a fairly simple use case so a global 'state' object works fine
     // without complicating things too much.
 
+    const colorScale = chroma.scale([
+      'red', 'yellow', 'green', 'cyan', 'blue'
+    ]).mode('lab').domain([0, 0.9]);
+
+    const confidenceScheme = NGL.ColormakerRegistry.addScheme(function (params) {
+      this.atomColor = function (atom) {
+
+        const getHexString = x => {
+          const y = parseInt(x).toString(16);
+          return y.length == 1 ? '0' + y : y
+        }
+
+        // Changing these would require recalculating linear coefficients as
+        // they are hard-coded
+        const BREAK_RED = 40;   // Below this is just red
+
+        // Actually model confidence (pLDDT)
+        const c = atom.bfactor;
+        let range, r, g, b;
+
+        if (c < BREAK_RED) {
+          // Anything below BREAK_RED is just red
+          return 0xFF0000;
+        }
+        const p = (c - BREAK_RED) / (100 - BREAK_RED)
+        return eval(colorScale(p).hex().replace('#', '0x'));
+      };
+    });
+
     const MODELS = [
       'ranked_0.pdb',
       'ranked_1.pdb',
@@ -437,6 +459,9 @@
       'surface',
       'backbone',
     ]
+
+    // NGL color schemes https://nglviewer.org/ngl/api/manual/usage/coloring.html
+    const COLORSCHEME = confidenceScheme;  //'bfactor'
 
     const DEFAULT_REPRESENTATION = REPRESENTATIONS[0];
     const MAX_CLICK_INTERVAL_MS = 500;
@@ -454,12 +479,12 @@
       spin: true,
     }
 
-    const uri = (i) => MODELS[i];
-    // Can update this function to return test model URI in local dev
-    // const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
+    // const uri = (i) => MODELS[i];
+    // Switch to this function to return sample model URI in local dev
+    const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
 
     document.addEventListener("DOMContentLoaded", async function () {
-      // Set debug for development if NGL is being funny
+      // Set debug for development if NGL is being... funny
       // NGL.setDebug(true)
 
       // Create NGL Stage object
@@ -487,7 +512,7 @@
       stage.removeComponent(state.modelObject);
       setLoading(1);
 
-      // Set nonce and wait before reloading to debounce rapid clicking
+      // Debounce rapid model clicking with a nonce
       nonceSetModel = new Object();
       const localNonce = nonceSetModel;
       setTimeout( () => {
@@ -526,7 +551,7 @@
 
     const addModelRepresentation = (rep) => {
       state.representations[rep] =
-        state.modelObject.addRepresentation(rep, {colorScheme: "bfactor"});
+        state.modelObject.addRepresentation(rep, {colorScheme: COLORSCHEME});
       updateButtons();
     }
 
