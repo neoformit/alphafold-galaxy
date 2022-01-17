@@ -89,9 +89,12 @@
         flex-direction: column;
         flex-grow: 0;
       }
+      .controls {
+        padding-bottom: 10vh;
+      }
       .box {
-        padding: 1rem;
-        margin: 1rem auto;
+        padding: .5rem 1rem;
+        margin: .5rem auto;
         width: fit-content;
         border-radius: 1rem;
       }
@@ -226,7 +229,7 @@
           <div id="ngl-root"></div>
 
           <div id="ngl-nothing">
-            No representations to display
+            Select a representation to display
           </div>
 
           <div id="ngl-loading">
@@ -423,17 +426,9 @@
     const confidenceScheme = NGL.ColormakerRegistry.addScheme(function (params) {
       this.atomColor = function (atom) {
 
-        const getHexString = x => {
-          const y = parseInt(x).toString(16);
-          return y.length == 1 ? '0' + y : y
-        }
-
-        // Changing these would require recalculating linear coefficients as
-        // they are hard-coded
-        const BREAK_RED = 40;   // Below this is just red
-
         // Actually model confidence (pLDDT)
         const c = atom.bfactor;
+        const BREAK_RED = 40;   // Below this is just red
         let range, r, g, b;
 
         if (c < BREAK_RED) {
