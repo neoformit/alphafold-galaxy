@@ -419,26 +419,31 @@
     // Vue - it's a fairly simple use case so a global 'state' object works fine
     // without complicating things too much.
 
+
+    // Define a custom color scheme to represent model confidence consistently
+    // across different representations
+    // ------------------------------------------------------------------------
     const colorScale = chroma.scale([
       'red', 'yellow', 'green', 'cyan', 'blue'
     ]).mode('lab').domain([0, 0.9]);
 
     const confidenceScheme = NGL.ColormakerRegistry.addScheme(function (params) {
       this.atomColor = function (atom) {
-
         // Actually model confidence (pLDDT)
         const c = atom.bfactor;
-        const BREAK_RED = 40;   // Below this is just red
+        const BREAK_RED = 40;   // Below this is just plain red
         let range, r, g, b;
 
         if (c < BREAK_RED) {
-          // Anything below BREAK_RED is just red
           return 0xFF0000;
         }
         const p = (c - BREAK_RED) / (100 - BREAK_RED)
         return eval(colorScale(p).hex().replace('#', '0x'));
       };
     });
+
+    // NGL color schemes https://nglviewer.org/ngl/api/manual/usage/coloring.html
+    const COLORSCHEME = confidenceScheme;  //'bfactor'
 
     const MODELS = [
       'ranked_0.pdb',
@@ -455,11 +460,8 @@
       'backbone',
     ]
 
-    // NGL color schemes https://nglviewer.org/ngl/api/manual/usage/coloring.html
-    const COLORSCHEME = confidenceScheme;  //'bfactor'
-
     const DEFAULT_REPRESENTATION = REPRESENTATIONS[0];
-    const MAX_CLICK_INTERVAL_MS = 500;
+    const MAX_CLICK_INTERVAL_MS = 500;  // For debouncing model clicks
 
     let stage;
     let nonceSetModel;
@@ -474,12 +476,12 @@
       spin: true,
     }
 
-    // const uri = (i) => MODELS[i];
-    // Switch to this function to return sample model URI in local dev
-    const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
+    const uri = (i) => MODELS[i];
+    // Switch to this function to return sample model URI (local dev)
+    // const uri = (i) => `https://raw.githubusercontent.com/neoformit/alphafold-galaxy/main/data/${MODELS[i]}`;
 
     document.addEventListener("DOMContentLoaded", async function () {
-      // Set debug for development if NGL is being... funny
+      // Can set debug for development if NGL is being... funny
       // NGL.setDebug(true)
 
       // Create NGL Stage object
